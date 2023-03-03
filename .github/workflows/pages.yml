@@ -24,6 +24,14 @@ jobs:
         with:
           node-version: 18.x
 
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "./App"
+          replace: "./CIApp"
+          regex: false
+          include: src/index.tsx
+
       - name: Install
         run: yarn
 

@@ -1,25 +1,22 @@
-import { chakra, ChakraComponent, Stack, StackProps, Tag, TagLabel, TagLeftIcon } from '@chakra-ui/react'
+import { Stack, Tag, TagLabel, TagLeftIcon, TagProps } from '@chakra-ui/react'
 import { FaTag } from 'react-icons/fa'
-import { useTorrentContext } from '.'
+import { useTorrent } from '../../hooks/use-torrent'
 
-const _Labels = (props : ChakraComponent<'div', StackProps>) => {
-  const { torrent: { labels }} = useTorrentContext()
+export const Labels = (props: TagProps) => {
+  const {
+    torrent: { labels },
+  } = useTorrent()
 
   if (!labels.length) return null
 
   return (
-    <Stack direction='row' spacing={2} display='inline-block' {...props}>
-      {
-        labels.map((label) => (
-          <Tag key={label}>
-            <TagLeftIcon as={FaTag} boxSize='10px' />
-            <TagLabel>{label}</TagLabel>
-          </Tag>
-        ))
-      }
+    <Stack direction='row' spacing={2}>
+      {labels.map((label) => (
+        <Tag key={label} {...props}>
+          <TagLeftIcon as={FaTag} boxSize='10px' />
+          <TagLabel>{label}</TagLabel>
+        </Tag>
+      ))}
     </Stack>
   )
 }
-
-export const Labels = chakra(_Labels)
-Labels.displayName = 'Labels'
