@@ -24,6 +24,8 @@ jobs:
 
       - name: Build CRA app
         run: yarn build
+        env:
+          PUBLIC_URL: '/transmission-web-ui'
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.1
