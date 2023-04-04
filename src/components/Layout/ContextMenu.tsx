@@ -50,7 +50,8 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
   }
   const longpress = useLongPress(contextmenu, () => {})
 
-  targetRef.current?.addEventListener('touchstart', longpress.onTouchStart)
+  useEventListener('touchstart', longpress.onTouchStart)
+  useEventListener('touchend', longpress.onTouchEnd)
   useEventListener('contextmenu', contextmenu)
 
   const onCloseHandler = useCallback(() => {
