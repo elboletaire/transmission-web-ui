@@ -37,7 +37,7 @@ export const ConfirmRemoval = ({ isOpen, close }: ConfirmRemovalProps) => {
           <FormControl display='flex' alignItems='center' mt={2}>
             <Switch id='data-removal' checked={removeData} onChange={(e) => setRemoveData(e.target.checked)} />
             <FormLabel htmlFor='data-removal' mb={1} ml={2}>
-              Also remove data (action cannot be undone!)
+              Also remove data (action cannot be undone)
             </FormLabel>
           </FormControl>
         </ModalBody>
@@ -49,7 +49,7 @@ export const ConfirmRemoval = ({ isOpen, close }: ConfirmRemovalProps) => {
             colorScheme='red'
             onClick={() => remove(removeData)}
           >
-            Confirm
+            Remove {removeData && ` & trash`}
           </Button>
         </ModalFooter>
       </ModalContent>

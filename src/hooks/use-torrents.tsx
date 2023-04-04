@@ -7,6 +7,7 @@ import { SetPayload, useTorrentsReducer } from './use-torrents-reducer'
 export const useTorrentsProvider = () => {
   const {
     torrents,
+    rename: renameAction,
     remove: removeAction,
     set: setAction,
     setLabels: setLabelsAction,
@@ -53,7 +54,7 @@ export const useTorrentsProvider = () => {
   const rename = (ids: number[], path: string, name: string) => {
     setUpdating(true)
     return makeRequest('torrent-rename-path', { ids, path, name })
-      .then(() => ids)
+      .then(() => renameAction(ids, name))
       .catch((error) => {
         console.error('could not rename torrents:', ids, error)
       })

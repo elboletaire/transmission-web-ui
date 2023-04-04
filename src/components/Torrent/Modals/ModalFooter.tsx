@@ -8,7 +8,7 @@ type ModalFooterProps = {
 export const ModalFooter = ({ close, children }: PropsWithChildren<ModalFooterProps>) => {
   return (
     <CModalFooter>
-      <ButtonGroup gap={3}>
+      <ButtonGroup gap={2}>
         <Button variant='ghost' onClick={close}>
           Cancel
         </Button>
