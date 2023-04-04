@@ -17,6 +17,7 @@ export const CompactRow = ({ childRef }: { childRef: any }) => (
     _even={{
       backgroundColor: useColorModeValue('#f2f2f2', '#12161F'),
     }}
+    userSelect='none'
   >
     <Box display='flex'>
       <Box

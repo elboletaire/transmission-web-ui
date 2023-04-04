@@ -18,7 +18,7 @@ export const TorrentRow = ({ childRef, ...rest }: TorrentRowProps) => {
   const { torrent } = useTorrent()
 
   return (
-    <Card {...rest} ref={childRef}>
+    <Card {...rest} ref={childRef} userSelect='none'>
       <CardHeader p={3} pt={2} pb={0} display='flex'>
         <TorrentName fontWeight='bold' />
         <Labels />

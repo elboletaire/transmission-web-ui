@@ -10,26 +10,26 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { useModals } from '../../hooks/use-modals'
 import { useTorrent } from '../../hooks/use-torrent'
 import { useTorrents } from '../../hooks/use-torrents'
 
 export const TorrentContextMenu = () => {
   const { torrent } = useTorrent()
   const { editLabels, removeTorrents } = useTorrents()
-  const { openConfirmRemove, closeConfirmRemove, confirmRemove } = useModals()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>
       <MenuList py={0}>
-        <MenuItem color='pink' onClick={openConfirmRemove}>
+        <MenuItem color='pink' onClick={onOpen}>
           Remove torrent
         </MenuItem>
         <MenuItem onClick={() => editLabels(torrent)}>Set labels</MenuItem>
       </MenuList>
 
-      <Modal isOpen={confirmRemove} onClose={closeConfirmRemove}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Confirm removal</ModalHeader>
@@ -41,7 +41,7 @@ export const TorrentContextMenu = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={closeConfirmRemove}>
+            <Button mr={3} onClick={onClose}>
               Cancel
             </Button>
             <Button

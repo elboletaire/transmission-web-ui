@@ -20,3 +20,9 @@ docker run -d \
   -v /path/to/transmission-web-ui/build:/webui \
   lscr.io/linuxserver/transmission:latest
 ```
+
+If you currently have unrestricted access to your RPC (either because it's
+unprotected or because you're on a LAN), you can try the
+[uploaded version in github pages][pages].
+
+[pages]: https://elboletaire.github.io/transmission-web-ui/
