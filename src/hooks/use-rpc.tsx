@@ -1,11 +1,5 @@
 import axios from 'axios'
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 import { ReactNode } from 'react'
 
@@ -47,16 +41,9 @@ export const useClientProvider = ({ rpc: r }: ClientProviderProps) => {
   )
 
   const catchSessionError = (error: any) => {
-    if (
-      error.response &&
-      error.response.status === 409 &&
-      error.response.headers['x-transmission-session-id']
-    ) {
+    if (error.response && error.response.status === 409 && error.response.headers['x-transmission-session-id']) {
       setSessid(error.response.headers['x-transmission-session-id'])
-      console.info(
-        'set sessionid:',
-        error.response.headers['x-transmission-session-id']
-      )
+      console.info('set sessionid:', error.response.headers['x-transmission-session-id'])
       return
     }
 
@@ -127,10 +114,7 @@ type ClientProviderComponentProps = ClientProviderProps & {
   children?: ReactNode
 }
 
-export const ClientProvider = ({
-  rpc,
-  ...rest
-}: ClientProviderComponentProps) => {
+export const ClientProvider = ({ rpc, ...rest }: ClientProviderComponentProps) => {
   const value = useClientProvider({ rpc })
 
   return <ClientContext.Provider value={value} {...rest} />

@@ -31,7 +31,9 @@
     "build": "react-scripts build",
     "build:prod": "REACT_APP_RPC=/transmission/rpc PUBLIC_URL=/transmission/web react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "prettier -c src",
+    "lint:fix": "prettier -c src --write"
   },
   "eslintConfig": {
     "extends": "react-app"

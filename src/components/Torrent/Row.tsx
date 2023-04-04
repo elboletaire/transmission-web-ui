@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import { Card, CardBody, CardHeader, Divider, Stack, Text } from '@chakra-ui/react'
 import { TorrentRowProps } from '.'
 import { useTorrent } from '../../hooks/use-torrent'
 import { FileSizeInfo, PeersInfo, SpeedInfo } from './Info'
@@ -25,9 +18,7 @@ export const TorrentRow = ({ childRef, ...rest }: TorrentRowProps) => {
       </CardHeader>
       <CardBody p={3} pt={0} pb={2}>
         <Stack direction='row' fontSize='.8em'>
-          {torrent.errorString.length > 0 && (
-            <Text color='orange'>{torrent.errorString}</Text>
-          )}
+          {torrent.errorString.length > 0 && <Text color='orange'>{torrent.errorString}</Text>}
           <PeersInfo />
           <Divider orientation='vertical' />
           <SpeedInfo />

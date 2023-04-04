@@ -1,19 +1,6 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 
-export type FilterStatusTypes =
-  | 'all'
-  | 'active'
-  | 'downloading'
-  | 'seeding'
-  | 'paused'
-  | 'finished'
-  | 'error'
+export type FilterStatusTypes = 'all' | 'active' | 'downloading' | 'seeding' | 'paused' | 'finished' | 'error'
 // I'd have loved to use `keyof typeof FilterStatusOptions` but I was getting weird type errors
 
 export const FilterStatusOptions: { [key: string]: string } = {
@@ -71,10 +58,7 @@ export const useLocalSettingsProvider = () => {
   const [storageLoaded, setStorageLoaded] = useState<boolean>(false)
   const [layout, setLayout] = useState<LayoutType>(LayoutDefaultState)
 
-  const setFilter = (
-    filter: keyof FiltersState,
-    contents: string | string[]
-  ) => {
+  const setFilter = (filter: keyof FiltersState, contents: string | string[]) => {
     const updated = {
       ...filters,
       [filter]: contents,
@@ -116,9 +100,7 @@ export const useLocalSettingsProvider = () => {
 
 export type LocalSettingsState = ReturnType<typeof useLocalSettingsProvider>
 
-export const LocalSettingsContext = createContext<
-  LocalSettingsState | undefined
->(undefined)
+export const LocalSettingsContext = createContext<LocalSettingsState | undefined>(undefined)
 LocalSettingsContext.displayName = 'LocalSettingsContext'
 
 export const useLocalSettings = () => {
@@ -137,9 +119,7 @@ type SettingsProviderComponentProps = {
   children?: ReactNode
 }
 
-export const LocalSettingsProvider = (
-  props: SettingsProviderComponentProps
-) => {
+export const LocalSettingsProvider = (props: SettingsProviderComponentProps) => {
   const value = useLocalSettingsProvider()
 
   return <LocalSettingsContext.Provider value={value} {...props} />

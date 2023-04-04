@@ -23,13 +23,7 @@ export const Settings = () => {
 
   return (
     <>
-      <IconButton
-        icon={<FaCogs />}
-        size='sm'
-        variant='ghost'
-        onClick={onOpen}
-        aria-label='Settings'
-      />
+      <IconButton icon={<FaCogs />} size='sm' variant='ghost' onClick={onOpen} aria-label='Settings' />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

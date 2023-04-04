@@ -59,10 +59,7 @@ type TorrentProviderComponentsProps = TorrentProviderProps & {
   children?: ReactNode
 }
 
-export const TorrentProvider = ({
-  torrent,
-  ...rest
-}: TorrentProviderComponentsProps) => {
+export const TorrentProvider = ({ torrent, ...rest }: TorrentProviderComponentsProps) => {
   const value = useTorrentProvider({ torrent })
 
   return <TorrentContext.Provider value={value} {...rest} />

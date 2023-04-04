@@ -1,20 +1,8 @@
-import {
-  Box,
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import { Box, IconButton, Input, InputGroup, InputRightElement, Stack, Text } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
 import { ChangeEvent } from 'react'
 import { RiCloseFill } from 'react-icons/ri'
-import {
-  FilterStatusOptions,
-  FilterStatusTypes,
-  useLocalSettings,
-} from '../../hooks/use-local-settings'
+import { FilterStatusOptions, FilterStatusTypes, useLocalSettings } from '../../hooks/use-local-settings'
 import { useTorrents } from '../../hooks/use-torrents'
 
 type Options = {

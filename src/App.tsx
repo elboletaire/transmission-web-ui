@@ -12,9 +12,7 @@ export const App = () => {
     <Flex m={2} direction='column'>
       <Navbar />
       <TorrentsList />
-      {(connecting || !ids.length) && (
-        <Progress size='xs' isIndeterminate w='full' mt={2} />
-      )}
+      {(connecting || !ids.length) && <Progress size='xs' isIndeterminate w='full' mt={2} />}
     </Flex>
   )
 }

@@ -1,9 +1,6 @@
 import { CardProps } from '@chakra-ui/react'
 import { Torrent as ITorrent, Tracker } from '../../hooks/interfaces'
-import {
-  FilterStatusTypes,
-  useLocalSettings,
-} from '../../hooks/use-local-settings'
+import { FilterStatusTypes, useLocalSettings } from '../../hooks/use-local-settings'
 import { TorrentProvider, TorrentStatus } from '../../hooks/use-torrent'
 import { ContextMenu } from '../Layout/ContextMenu'
 import { TorrentContextMenu } from './ContextMenu'
@@ -22,15 +19,11 @@ const isStatusFiltered = (filter: FilterStatusTypes, torrent: ITorrent) => {
         torrent.status === TorrentStatus.Check
       )
     case 'downloading':
-      return [TorrentStatus.DownloadWait, TorrentStatus.Download].includes(
-        torrent.status
-      )
+      return [TorrentStatus.DownloadWait, TorrentStatus.Download].includes(torrent.status)
     case 'paused':
       return torrent.status === TorrentStatus.Stopped
     case 'seeding':
-      return [TorrentStatus.Seed, TorrentStatus.SeedWait].includes(
-        torrent.status
-      )
+      return [TorrentStatus.Seed, TorrentStatus.SeedWait].includes(torrent.status)
     case 'finished':
       return torrent.isFinished
     case 'error':
@@ -98,11 +91,7 @@ export const Torrent = ({ torrent, ...rest }: TorrentProps) => {
     <TorrentProvider torrent={torrent}>
       <ContextMenu<HTMLDivElement> renderMenu={() => <TorrentContextMenu />}>
         {(ref) =>
-          layout === 'full' ? (
-            <TorrentRow {...rest} childRef={ref} />
-          ) : (
-            <CompactRow {...rest} childRef={ref} />
-          )
+          layout === 'full' ? <TorrentRow {...rest} childRef={ref} /> : <CompactRow {...rest} childRef={ref} />
         }
       </ContextMenu>
     </TorrentProvider>

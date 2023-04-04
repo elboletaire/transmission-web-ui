@@ -1,59 +1,22 @@
-import {
-  Button,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { useTorrent } from '../../hooks/use-torrent'
-import { useTorrents } from '../../hooks/use-torrents'
+import { MenuItem, MenuList, useDisclosure } from '@chakra-ui/react'
+import { ConfirmRemoval } from './Modals/ConfirmRemoval'
+import { SetLabels } from './Modals/SetLabels'
 
 export const TorrentContextMenu = () => {
-  const { torrent } = useTorrent()
-  const { editLabels, removeTorrents } = useTorrents()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isConfirmOpen, onOpen: onConfirmOpen, onClose: onConfirmClose } = useDisclosure()
+  const { isOpen: isLabelsEditorOpen, onOpen: onLabelsOpen, onClose: closeLabelsEditor } = useDisclosure()
 
   return (
     <>
       <MenuList py={0}>
-        <MenuItem color='pink' onClick={onOpen}>
+        <MenuItem color='pink' onClick={onConfirmOpen}>
           Remove torrent
         </MenuItem>
-        <MenuItem onClick={() => editLabels(torrent)}>Set labels</MenuItem>
+        <MenuItem onClick={onLabelsOpen}>Set labels</MenuItem>
       </MenuList>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Confirm removal</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>
-              Are you sure you want to remove <strong>{torrent.name}</strong>?
-            </Text>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              variant='ghost'
-              colorScheme='pink'
-              onClick={() => removeTorrents([torrent.id], false)}
-            >
-              Confirm
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ConfirmRemoval isConfirmOpen={isConfirmOpen} onConfirmClose={onConfirmClose} />
+      <SetLabels isLabelsEditorOpen={isLabelsEditorOpen} closeLabelsEditor={closeLabelsEditor} />
     </>
   )
 }

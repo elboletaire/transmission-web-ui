@@ -12,13 +12,9 @@ const useLongPress = (
   const start = useCallback(
     (event: TouchEvent) => {
       if (shouldPreventDefault && event.target) {
-        event.target.addEventListener(
-          'touchend',
-          preventDefault as EventListener,
-          {
-            passive: false,
-          }
-        )
+        event.target.addEventListener('touchend', preventDefault as EventListener, {
+          passive: false,
+        })
         target.current = event.target
       }
       timeout.current = window.setTimeout(() => {

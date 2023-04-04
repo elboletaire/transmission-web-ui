@@ -1,13 +1,5 @@
-import { useDisclosure } from '@chakra-ui/react'
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
-import { Torrent, TorrentRequestFields } from './interfaces'
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react'
+import { TorrentRequestFields } from './interfaces'
 import { useLocalSettingsProvider } from './use-local-settings'
 import { useClient } from './use-rpc'
 import { SetPayload, useTorrentsReducer } from './use-torrents-reducer'
@@ -15,11 +7,6 @@ import { SetPayload, useTorrentsReducer } from './use-torrents-reducer'
 export const useTorrentsProvider = () => {
   const { torrents, remove, set, setLabels, start, stop } = useTorrentsReducer()
   const [selected, setSelected] = useState<number | null>(null)
-  const {
-    isOpen: isLabelsEditorOpen,
-    onOpen: openLabelsEditor,
-    onClose: closeLabelsEditor,
-  } = useDisclosure()
   const [updating, setUpdating] = useState<boolean>(false)
   const { connected, makeRequest } = useClient()
   const { fetchTorrentsTimeout } = useLocalSettingsProvider()
@@ -45,11 +32,6 @@ export const useTorrentsProvider = () => {
     },
     [set, makeRequest, updating]
   )
-
-  const editLabels = (torrent: Torrent) => {
-    setSelected(torrent.id)
-    openLabelsEditor()
-  }
 
   const updateLabels = (ids: number[], labels: string[]) => {
     setUpdating(true)
@@ -113,20 +95,13 @@ export const useTorrentsProvider = () => {
   // start fetch torrent interval
   useEffect(() => {
     if (!torrents.ids.length) return
-    const inter = setInterval(
-      () => fetchTorrents('recently-active'),
-      fetchTorrentsTimeout
-    )
+    const inter = setInterval(() => fetchTorrents('recently-active'), fetchTorrentsTimeout)
     return () => clearInterval(inter)
   }, [fetchTorrents, fetchTorrentsTimeout, torrents.ids.length])
 
   return {
     ...torrents,
-    closeLabelsEditor,
-    editLabels,
     fetchTorrents,
-    isLabelsEditorOpen,
-    openLabelsEditor,
     removeTorrents,
     selected,
     setSelected,
@@ -139,9 +114,7 @@ export const useTorrentsProvider = () => {
 
 export type TorrentsState = ReturnType<typeof useTorrentsProvider>
 
-export const TorrentsContext = createContext<TorrentsState | undefined>(
-  undefined
-)
+export const TorrentsContext = createContext<TorrentsState | undefined>(undefined)
 TorrentsContext.displayName = 'TorrentsContext'
 
 export const useTorrents = () => {

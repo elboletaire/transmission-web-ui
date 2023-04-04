@@ -20,24 +20,14 @@ export const Navbar = () => {
           <ColorModeSwitcher />
         </ButtonGroup>
       </Stack>
-      <Stack
-        direction={['column', 'column', 'column', 'row']}
-        justifyContent='space-between'
-      >
+      <Stack direction={['column', 'column', 'column', 'row']} justifyContent='space-between'>
         <Stack direction={['column', 'column', 'row']} order={[2, 2, 1]}>
           <Filters />
           <Text display='flex' alignItems='center'>
-            {connecting || !ids.length
-              ? 'fetching transfers'
-              : ids.length + ' transfers'}
+            {connecting || !ids.length ? 'fetching transfers' : ids.length + ' transfers'}
           </Text>
         </Stack>
-        <Stack
-          direction='row'
-          justifyContent='end'
-          justifySelf='end'
-          order={[1, 1, 1, 2]}
-        >
+        <Stack direction='row' justifyContent='end' justifySelf='end' order={[1, 1, 1, 2]}>
           <DownloadSpeed />
           <UploadSpeed />
         </Stack>

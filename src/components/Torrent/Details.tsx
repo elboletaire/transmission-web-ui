@@ -1,14 +1,4 @@
-import {
-  CloseButton,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react'
+import { CloseButton, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import prettyBytes from 'pretty-bytes'
 import { useTorrents } from '../../hooks/use-torrents'
 

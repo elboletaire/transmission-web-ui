@@ -10,27 +10,25 @@ import {
 } from '@chakra-ui/react'
 import { CreatableSelect } from 'chakra-react-select'
 import { useState } from 'react'
-import { useTorrents } from '../../hooks/use-torrents'
+import { useTorrent } from '../../../hooks/use-torrent'
+import { useTorrents } from '../../../hooks/use-torrents'
 
-export const SetLabels = () => {
-  const {
-    list,
-    labels,
-    selected,
-    updateLabels,
-    isLabelsEditorOpen,
-    closeLabelsEditor,
-  } = useTorrents()
+type SetLabelsProps = {
+  isLabelsEditorOpen: boolean
+  closeLabelsEditor: () => void
+}
+
+export const SetLabels = ({ closeLabelsEditor, isLabelsEditorOpen }: SetLabelsProps) => {
+  const { torrent } = useTorrent()
+  const { labels, updateLabels } = useTorrents()
   const [newLabels, setNewLabels] = useState<string[]>([])
   const [saving, setSaving] = useState<boolean>(false)
-
-  const found = Object.values(list).find(({ id }) => id === selected)
 
   return (
     <Modal isOpen={isLabelsEditorOpen} onClose={closeLabelsEditor}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Set labels for {found?.name}</ModalHeader>
+        <ModalHeader>Set labels for {torrent.name}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <CreatableSelect
@@ -39,7 +37,7 @@ export const SetLabels = () => {
               label: l,
               value: l,
             }))}
-            defaultValue={found?.labels.map((l) => ({
+            defaultValue={torrent.labels.map((l) => ({
               label: l,
               value: l,
             }))}
@@ -54,13 +52,13 @@ export const SetLabels = () => {
             disabled={saving}
             isLoading={saving}
             onClick={async () => {
-              if (!found) {
+              if (!torrent) {
                 return
               }
               setSaving(true)
 
               try {
-                await updateLabels([found.id], newLabels)
+                await updateLabels([torrent.id], newLabels)
                 closeLabelsEditor()
               } catch (e) {
                 console.error(e)

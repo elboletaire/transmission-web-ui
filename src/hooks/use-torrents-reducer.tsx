@@ -65,14 +65,9 @@ const calculateUploadSpeed: (torrents: Torrent[]) => number = (torrents) =>
   torrents.reduce((acc, torrent) => acc + torrent.rateUpload, 0)
 
 const extractUniqueLabels: (torrents: Torrent[]) => string[] = (torrents) =>
-  [
-    ...new Set(
-      torrents.reduce((acc, tor) => [...acc, ...tor.labels], [] as string[])
-    ),
-  ].sort()
+  [...new Set(torrents.reduce((acc, tor) => [...acc, ...tor.labels], [] as string[]))].sort()
 
-const extractIds: (torrents: Torrent[]) => number[] = (torrents) =>
-  torrents.map((torrent) => torrent.id).sort()
+const extractIds: (torrents: Torrent[]) => number[] = (torrents) => torrents.map((torrent) => torrent.id).sort()
 
 const extractUniqueTrackers: (torrents: Torrent[]) => Tracker[] = (torrents) =>
   torrents
@@ -85,9 +80,7 @@ const extractUniqueTrackers: (torrents: Torrent[]) => Tracker[] = (torrents) =>
 
       return acc
     }, [] as Tracker[])
-    .sort((a, b) =>
-      a.sitename > b.sitename ? 1 : a.sitename < b.sitename ? -1 : 0
-    )
+    .sort((a, b) => (a.sitename > b.sitename ? 1 : a.sitename < b.sitename ? -1 : 0))
 
 const removeTorrents = (state: TorrentsState, payloadIds: number[]) => {
   const ids: number[] = [...state.ids]
@@ -113,10 +106,7 @@ export const torrentsReducer: Reducer<TorrentsState, TorrentsAction> = (
       const { ids } = action.payload as IdsPayload
       const { list } = state
       ids.forEach((id) => {
-        list[id].status =
-          action.type === StopTorrents
-            ? TorrentStatus.Stopped
-            : TorrentStatus.DownloadWait
+        list[id].status = action.type === StopTorrents ? TorrentStatus.Stopped : TorrentStatus.DownloadWait
       })
 
       return {

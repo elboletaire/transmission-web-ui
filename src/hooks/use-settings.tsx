@@ -14,9 +14,7 @@ export const useSettingsProvider = () => {
 
 export type SettingsState = ReturnType<typeof useSettingsProvider>
 
-export const SettingsContext = createContext<SettingsState | undefined>(
-  undefined
-)
+export const SettingsContext = createContext<SettingsState | undefined>(undefined)
 SettingsContext.displayName = 'SettingsContext'
 
 export const useSettings = () => {

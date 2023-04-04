@@ -22,10 +22,7 @@ export const Progress = (props: ProgressProps) => {
   }
 
   const colorScheme = () => {
-    if (
-      torrent.isFinished ||
-      [TorrentStatus.Seed, TorrentStatus.SeedWait].includes(torrent.status)
-    ) {
+    if (torrent.isFinished || [TorrentStatus.Seed, TorrentStatus.SeedWait].includes(torrent.status)) {
       return 'green'
     }
 

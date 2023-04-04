@@ -15,16 +15,14 @@ export const FileSizeInfo = () => {
     <Stack direction='row'>
       {torrent.percentDone === 1 ? (
         <Text fontSize='xs'>
-          {prettyBytes(torrent.sizeWhenDone)}&nbsp; uploaded{' '}
-          {prettyBytes(torrent.uploadedEver)} (ratio {torrent.uploadRatio}
+          {prettyBytes(torrent.sizeWhenDone)}&nbsp; uploaded {prettyBytes(torrent.uploadedEver)} (ratio{' '}
+          {torrent.uploadRatio}
           )&nbsp; - <TimeLeft />
         </Text>
       ) : (
         <Text fontSize='xs'>
-          {prettyBytes(torrent.downloadedEver)} of{' '}
-          {prettyBytes(torrent.sizeWhenDone)}
-          &nbsp;({Math.round(torrent.percentDone * 10000) / 100}%) -{' '}
-          <TimeLeft />
+          {prettyBytes(torrent.downloadedEver)} of {prettyBytes(torrent.sizeWhenDone)}
+          &nbsp;({Math.round(torrent.percentDone * 10000) / 100}%) - <TimeLeft />
         </Text>
       )}
     </Stack>
@@ -35,11 +33,7 @@ export const TimeLeft = () => {
   const { torrent } = useTorrent()
 
   return (
-    <>
-      {torrent.eta > 0
-        ? formatDistance(Date.now(), addSeconds(new Date(), torrent.eta))
-        : 'remaining time unknown'}
-    </>
+    <>{torrent.eta > 0 ? formatDistance(Date.now(), addSeconds(new Date(), torrent.eta)) : 'remaining time unknown'}</>
   )
 }
 
@@ -51,8 +45,7 @@ export const Downloading = () => {
 
   return (
     <Text>
-      Downloading from {torrent.peersSendingToUs} of {torrent.peersConnected}{' '}
-      peers
+      Downloading from {torrent.peersSendingToUs} of {torrent.peersConnected} peers
     </Text>
   )
 }

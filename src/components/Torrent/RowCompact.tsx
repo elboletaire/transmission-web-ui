@@ -20,27 +20,13 @@ export const CompactRow = ({ childRef }: { childRef: any }) => (
     userSelect='none'
   >
     <Box display='flex'>
-      <Box
-        display='flex'
-        flexDir='row'
-        overflow='hidden'
-        mr={3}
-        justifySelf='start'
-      >
+      <Box display='flex' flexDir='row' overflow='hidden' mr={3} justifySelf='start'>
         <TorrentName fontSize='sm' />
         <Box display='flex'>
           <Labels variant='outline' size='xs' />
         </Box>
       </Box>
-      <Box
-        display='flex'
-        flexDir='row'
-        alignItems='center'
-        justifyContent='end'
-        flexShrink={0}
-        ml='auto'
-        mr={1}
-      >
+      <Box display='flex' flexDir='row' alignItems='center' justifyContent='end' flexShrink={0} ml='auto' mr={1}>
         <InfoCompact />
       </Box>
       <ToggleStatus minW='auto' />
@@ -65,10 +51,7 @@ const InfoCompact = () => {
           : torrent.status === TorrentStatus.Stopped
           ? 'Paused'
           : torrent.eta > 0
-          ? `ETA: ${formatDistance(
-              Date.now(),
-              addSeconds(new Date(), torrent.eta)
-            )}`
+          ? `ETA: ${formatDistance(Date.now(), addSeconds(new Date(), torrent.eta))}`
           : `Ratio: ${Math.round(torrent.uploadRatio * 100) / 100}`}
       </Text>
       {torrent.rateDownload > 0 && (
