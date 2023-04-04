@@ -13,7 +13,7 @@ export const Navbar = () => {
   return (
     <Stack>
       <Stack justifyContent='flex-end' direction='row' alignItems='center'>
-        <Box>{updating && <Spinner size='sm' color='pgreen' />}</Box>
+        <Box>{updating && <Spinner size='sm' color='spinner' />}</Box>
         <ButtonGroup isAttached>
           <SettingsLayout />
           {/* <Settings /> */}

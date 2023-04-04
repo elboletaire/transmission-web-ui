@@ -6,7 +6,6 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Switch,
@@ -14,20 +13,19 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useTorrent } from '../../../hooks/use-torrent'
-import { useTorrents } from '../../../hooks/use-torrents'
+import { ModalFooter } from './ModalFooter'
 
 type ConfirmRemovalProps = {
-  isConfirmOpen: boolean
-  onConfirmClose: () => void
+  isOpen: boolean
+  close: () => void
 }
 
-export const ConfirmRemoval = ({ isConfirmOpen, onConfirmClose }: ConfirmRemovalProps) => {
-  const { torrent } = useTorrent()
-  const { removeTorrents } = useTorrents()
+export const ConfirmRemoval = ({ isOpen, close }: ConfirmRemovalProps) => {
+  const { loading, torrent, remove } = useTorrent()
   const [removeData, setRemoveData] = useState<boolean>(false)
 
   return (
-    <Modal isOpen={isConfirmOpen} onClose={onConfirmClose}>
+    <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Confirm removal</ModalHeader>
@@ -43,12 +41,14 @@ export const ConfirmRemoval = ({ isConfirmOpen, onConfirmClose }: ConfirmRemoval
             </FormLabel>
           </FormControl>
         </ModalBody>
-
-        <ModalFooter>
-          <Button mr={3} onClick={onConfirmClose}>
-            Cancel
-          </Button>
-          <Button variant='ghost' colorScheme='pink' onClick={() => removeTorrents([torrent.id], removeData)}>
+        <ModalFooter close={close}>
+          <Button
+            disabled={loading}
+            isLoading={loading}
+            variant='ghost'
+            colorScheme='red'
+            onClick={() => remove(removeData)}
+          >
             Confirm
           </Button>
         </ModalFooter>

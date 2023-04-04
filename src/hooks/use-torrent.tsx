@@ -17,24 +17,69 @@ export enum TorrentStatus {
 }
 
 export const useTorrentProvider = ({ torrent }: TorrentProviderProps) => {
-  const { startTorrents, stopTorrents } = useTorrents()
+  const {
+    reannounce: reannounceAll,
+    remove: removeAll,
+    rename: renameAll,
+    setLocation: setAllLocation,
+    start: startAll,
+    stop: stopAll,
+    updateLabels: updateAllLabels,
+    verify: verifyAll,
+  } = useTorrents()
   const [loading, setLoading] = useState<boolean>(false)
+
+  const reannounce = () => {
+    setLoading(true)
+    return reannounceAll([torrent.id]).finally(() => setLoading(false))
+  }
+
+  const rename = (path: string, name: string) => {
+    setLoading(true)
+    return renameAll([torrent.id], path, name).finally(() => setLoading(false))
+  }
+
+  const remove = (deleteLocal: boolean = false) => {
+    setLoading(true)
+    return removeAll([torrent.id], deleteLocal).finally(() => setLoading(false))
+  }
+
+  const setLocation = (location: string, move: boolean = false) => {
+    setLoading(true)
+    return setAllLocation([torrent.id], location, move).finally(() => setLoading(false))
+  }
 
   const stop = () => {
     setLoading(true)
-    return stopTorrents([torrent.id]).finally(() => setLoading(false))
+    return stopAll([torrent.id]).finally(() => setLoading(false))
   }
 
   const start = () => {
     setLoading(true)
-    return startTorrents([torrent.id]).finally(() => setLoading(false))
+    return startAll([torrent.id]).finally(() => setLoading(false))
+  }
+
+  const updateLabels = (labels: string[]) => {
+    setLoading(true)
+    return updateAllLabels([torrent.id], labels).finally(() => setLoading(false))
+  }
+
+  const verify = () => {
+    setLoading(true)
+    return verifyAll([torrent.id]).finally(() => setLoading(false))
   }
 
   return {
     loading,
-    torrent,
+    reannounce,
+    rename,
+    remove,
+    setLocation,
     start,
     stop,
+    torrent,
+    updateLabels,
+    verify,
   }
 }
 

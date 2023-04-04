@@ -5,14 +5,21 @@ import { useClient } from './use-rpc'
 import { SetPayload, useTorrentsReducer } from './use-torrents-reducer'
 
 export const useTorrentsProvider = () => {
-  const { torrents, remove, set, setLabels, start, stop } = useTorrentsReducer()
+  const {
+    torrents,
+    remove: removeAction,
+    set: setAction,
+    setLabels: setLabelsAction,
+    start: startAction,
+    stop: stopAction,
+  } = useTorrentsReducer()
   const [selected, setSelected] = useState<number | null>(null)
   const [updating, setUpdating] = useState<boolean>(false)
   const { connected, makeRequest } = useClient()
   const { fetchTorrentsTimeout } = useLocalSettingsProvider()
 
   // fetches torrent updates
-  const fetchTorrents: (ids?: string | number[]) => Promise<any> = useCallback(
+  const fetch: (ids?: string | number[]) => Promise<any> = useCallback(
     async (ids?: string | number[]) => {
       if (updating) {
         return
@@ -27,11 +34,76 @@ export const useTorrentsProvider = () => {
       }
 
       return await makeRequest('torrent-get', args)
-        .then((response) => set(response.data.arguments as SetPayload))
+        .then((response) => setAction(response.data.arguments as SetPayload))
         .finally(() => setUpdating(false))
     },
-    [set, makeRequest, updating]
+    [setAction, makeRequest, updating]
   )
+
+  const reannounce = (ids: number[]) => {
+    setUpdating(true)
+    return makeRequest('torrent-reannounce', { ids })
+      .then(() => ids)
+      .catch((error) => {
+        console.error('could not reannounce torrents:', ids, error)
+      })
+      .finally(() => setUpdating(false))
+  }
+
+  const rename = (ids: number[], path: string, name: string) => {
+    setUpdating(true)
+    return makeRequest('torrent-rename-path', { ids, path, name })
+      .then(() => ids)
+      .catch((error) => {
+        console.error('could not rename torrents:', ids, error)
+      })
+      .finally(() => setUpdating(false))
+  }
+
+  const remove = (ids: number[], deleteLocal: boolean) => {
+    setUpdating(true)
+    return makeRequest('torrent-remove', {
+      ids,
+      'delete-local-data': deleteLocal,
+    })
+      .then(() => {
+        removeAction(ids)
+        return ids
+      })
+      .catch((error) => {
+        console.error('could not remove torrents:', ids, error)
+      })
+      .finally(() => setUpdating(false))
+  }
+
+  const setLocation = (ids: number[], location: string, move: boolean = false) => {
+    setUpdating(true)
+    return makeRequest('torrent-set-location', { ids, location, move })
+      .catch((error) => {
+        console.error('could not change location for torrents:', ids, error)
+      })
+      .finally(() => setUpdating(false))
+  }
+
+  const start = (ids: number[]) => {
+    setUpdating(true)
+    return makeRequest('torrent-start', { ids })
+      .then(() => startAction(ids))
+      .catch((error) => {
+        console.error('could not start torrents:', ids, error)
+      })
+      .finally(() => setUpdating(false))
+  }
+
+  const stop = (ids: number[]) => {
+    setUpdating(true)
+    return makeRequest('torrent-stop', { ids })
+      .then(() => stopAction(ids))
+      .catch((error) => {
+        console.error('could not stop torrents:', ids, error)
+      })
+      .finally(() => setUpdating(false))
+  }
 
   const updateLabels = (ids: number[], labels: string[]) => {
     setUpdating(true)
@@ -39,76 +111,50 @@ export const useTorrentsProvider = () => {
       ids,
       labels,
     })
-      .then(() => setLabels(ids, labels))
+      .then(() => setLabelsAction(ids, labels))
       .catch((error) => {
         console.error('could not set labels:', error)
       })
       .finally(() => setUpdating(false))
   }
 
-  const startTorrents = (ids: number[]) => {
+  const verify = (ids: number[]) => {
     setUpdating(true)
-    return makeRequest('torrent-start', { ids })
-      .then(() => start(ids))
-      .catch((error) => {
-        console.error('could not start torrents:', ids, error)
-      })
+    return makeRequest('torrent-verify', { ids })
+      .then(() => ids)
+      .catch((error) => console.error('could not verify torrent:', error))
       .finally(() => setUpdating(false))
-  }
-
-  const stopTorrents = (ids: number[]) => {
-    setUpdating(true)
-    return makeRequest('torrent-stop', { ids })
-      .then(() => stop(ids))
-      .catch((error) => {
-        console.error('could not stop torrents:', ids, error)
-      })
-      .finally(() => setUpdating(false))
-  }
-
-  const removeTorrents = (ids: number[], deleteLocal: boolean) => {
-    setUpdating(true)
-    return makeRequest('torrent-remove', {
-      ids,
-      'delete-local-data': deleteLocal,
-    })
-      .then(() => {
-        remove(ids)
-
-        return ids
-      })
-      .catch((error) => {
-        console.error('could not remove torrents:', ids, error)
-
-        setUpdating(false)
-      })
   }
 
   // fetch torrent list for the first time
   useEffect(() => {
     if (torrents.ids.length || !connected) return
     ;(async () => {
-      await fetchTorrents()
+      await fetch()
     })()
-  }, [torrents.ids.length, fetchTorrents, connected])
+  }, [torrents.ids.length, fetch, connected])
 
   // start fetch torrent interval
   useEffect(() => {
     if (!torrents.ids.length) return
-    const inter = setInterval(() => fetchTorrents('recently-active'), fetchTorrentsTimeout)
+    const inter = setInterval(() => fetch('recently-active'), fetchTorrentsTimeout)
     return () => clearInterval(inter)
-  }, [fetchTorrents, fetchTorrentsTimeout, torrents.ids.length])
+  }, [fetch, fetchTorrentsTimeout, torrents.ids.length])
 
   return {
     ...torrents,
-    fetchTorrents,
-    removeTorrents,
+    fetch,
+    reannounce,
+    rename,
+    remove,
     selected,
+    setLocation,
     setSelected,
-    startTorrents,
-    stopTorrents,
+    start,
+    stop,
     updateLabels,
     updating,
+    verify,
   }
 }
 

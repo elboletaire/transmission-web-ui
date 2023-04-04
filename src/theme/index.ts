@@ -8,6 +8,6 @@ export const theme = extendTheme({
     Progress,
   },
   colors: {
-    pgreen: '#77DD77',
+    spinner: '#77DD77',
   },
 })
