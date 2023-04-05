@@ -21,6 +21,8 @@ export const useTorrentProvider = ({ torrent }: TorrentProviderProps) => {
     reannounce: reannounceAll,
     remove: removeAll,
     rename: renameAll,
+    selectSingle,
+    selected,
     setLocation: setAllLocation,
     start: startAll,
     stop: stopAll,
@@ -74,6 +76,10 @@ export const useTorrentProvider = ({ torrent }: TorrentProviderProps) => {
     reannounce,
     rename,
     remove,
+    select: () => (selected.length === 1 && selected.includes(torrent.id) ? null : selectSingle(torrent.id)),
+    get selected() {
+      return selected.find((id) => id === torrent.id)
+    },
     setLocation,
     start,
     stop,

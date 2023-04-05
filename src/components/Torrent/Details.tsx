@@ -3,13 +3,13 @@ import prettyBytes from 'pretty-bytes'
 import { useTorrents } from '../../hooks/use-torrents'
 
 export const Details = () => {
-  const { list, selected, setSelected } = useTorrents()
+  const { list, selected } = useTorrents()
 
   if (!selected) {
     return null
   }
 
-  const torrent = Object.values(list).find(({ id }) => id === selected)
+  const torrent = Object.values(list).find(({ id }) => selected.includes(id))
   if (!torrent) {
     return null
   }
@@ -18,7 +18,7 @@ export const Details = () => {
     <TableContainer>
       <Table variant='simple'>
         <TableCaption>
-          <CloseButton onClick={() => setSelected(null)} />
+          <CloseButton onClick={() => {}} />
         </TableCaption>
         <Thead>
           <Tr>

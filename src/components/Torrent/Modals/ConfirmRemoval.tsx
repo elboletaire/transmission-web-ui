@@ -31,10 +31,10 @@ export const ConfirmRemoval = ({ isOpen, close }: ConfirmRemovalProps) => {
         <ModalHeader>Confirm removal</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text>
+          <Text mb={2}>
             Are you sure you want to remove <strong>{torrent.name}</strong>?
           </Text>
-          <FormControl display='flex' alignItems='center' mt={2}>
+          <FormControl display='flex' alignItems='center'>
             <Switch id='data-removal' checked={removeData} onChange={(e) => setRemoveData(e.target.checked)} />
             <FormLabel htmlFor='data-removal' mb={1} ml={2}>
               Also remove data (action cannot be undone)

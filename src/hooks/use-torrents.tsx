@@ -14,7 +14,7 @@ export const useTorrentsProvider = () => {
     start: startAction,
     stop: stopAction,
   } = useTorrentsReducer()
-  const [selected, setSelected] = useState<number | null>(null)
+  const [selected, setSelected] = useState<number[]>([])
   const [updating, setUpdating] = useState<boolean>(false)
   const { connected, makeRequest } = useClient()
   const { fetchTorrentsTimeout } = useLocalSettingsProvider()
@@ -148,9 +148,20 @@ export const useTorrentsProvider = () => {
     reannounce,
     rename,
     remove,
+    selectSingle: (id: number) => {
+      if (selected.length === 1 && selected.includes(id)) {
+        return setSelected([])
+      }
+      setSelected([id])
+    },
+    select: (id: number) => {
+      if (selected.includes(id)) {
+        return setSelected([...selected.filter((i) => i !== id)])
+      }
+      setSelected([...selected, id])
+    },
     selected,
     setLocation,
-    setSelected,
     start,
     stop,
     updateLabels,

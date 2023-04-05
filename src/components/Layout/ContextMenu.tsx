@@ -8,6 +8,7 @@ export interface ContextMenuProps<T extends HTMLElement> {
   menuProps?: Omit<MenuProps, 'children'> & { children?: ReactNode }
   portalProps?: Omit<PortalProps, 'children'> & { children?: ReactNode }
   menuButtonProps?: MenuButtonProps
+  onOpen?: () => void
 }
 
 export function ContextMenu<T extends HTMLElement = HTMLElement>(props: ContextMenuProps<T>) {
@@ -15,8 +16,11 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(props: ContextM
   const [position, setPosition] = useState<[number, number]>([0, 0])
   const targetRef = useRef<T>(null)
 
+  const isCurrent = (e: MouseEvent | TouchEvent) =>
+    targetRef.current?.contains(e.target as any) || e.target === targetRef.current
+
   const contextmenu = (e: MouseEvent | TouchEvent) => {
-    if (targetRef.current?.contains(e.target as any) || e.target === targetRef.current) {
+    if (isCurrent(e)) {
       e.preventDefault()
       if ('touches' in e) {
         const [touch] = (e as TouchEvent).touches
@@ -25,14 +29,17 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(props: ContextM
         setPosition([e.pageX, e.pageY])
       }
       setIsOpen(true)
+      if (typeof props.onOpen === 'function') {
+        props.onOpen()
+      }
     } else {
       setIsOpen(false)
     }
   }
   const longpress = useLongPress(contextmenu, () => {})
 
-  useEventListener('touchstart', longpress.onTouchStart)
-  useEventListener('touchend', longpress.onTouchEnd)
+  useEventListener('touchstart', (e) => isCurrent(e) && longpress.onTouchStart(e))
+  useEventListener('touchend', (e) => isCurrent(e) && longpress.onTouchEnd(e))
   useEventListener('contextmenu', contextmenu)
 
   const onCloseHandler = useCallback(() => {

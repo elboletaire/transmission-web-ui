@@ -1,11 +1,11 @@
 import { CardProps } from '@chakra-ui/react'
 import { Torrent as ITorrent, Tracker } from '../../hooks/interfaces'
 import { FilterStatusTypes, useLocalSettings } from '../../hooks/use-local-settings'
-import { TorrentProvider, TorrentStatus } from '../../hooks/use-torrent'
+import { TorrentProvider, TorrentStatus, useTorrent } from '../../hooks/use-torrent'
 import { ContextMenu } from '../Layout/ContextMenu'
 import { TorrentContextMenu } from './ContextMenu'
 import { TorrentRow } from './Row'
-import { CompactRow } from './RowCompact'
+import { RowCompact } from './RowCompact'
 
 const isStatusFiltered = (filter: FilterStatusTypes, torrent: ITorrent) => {
   switch (filter) {
@@ -74,9 +74,7 @@ type TorrentProps = CardProps & {
 export const Torrent = ({ torrent, ...rest }: TorrentProps) => {
   const {
     filters: { status, trackers, labels, name },
-    layout,
   } = useLocalSettings()
-  // const longpress = useLongPress()
 
   if (
     !isStatusFiltered(status, torrent) ||
@@ -89,12 +87,18 @@ export const Torrent = ({ torrent, ...rest }: TorrentProps) => {
 
   return (
     <TorrentProvider torrent={torrent}>
-      <ContextMenu<HTMLDivElement> renderMenu={() => <TorrentContextMenu />}>
-        {(ref) =>
-          layout === 'full' ? <TorrentRow {...rest} childRef={ref} /> : <CompactRow {...rest} childRef={ref} />
-        }
-      </ContextMenu>
+      <CMenu {...rest} />
     </TorrentProvider>
+  )
+}
+
+const CMenu = (rest: any) => {
+  const { layout } = useLocalSettings()
+  const { select } = useTorrent()
+  return (
+    <ContextMenu<HTMLDivElement> renderMenu={() => <TorrentContextMenu />} onOpen={select}>
+      {(ref) => (layout === 'full' ? <TorrentRow {...rest} childRef={ref} /> : <RowCompact {...rest} childRef={ref} />)}
+    </ContextMenu>
   )
 }
 

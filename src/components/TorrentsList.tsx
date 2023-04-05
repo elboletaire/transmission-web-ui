@@ -4,14 +4,25 @@ import { useTorrents } from '../hooks/use-torrents'
 import { Torrent } from './Torrent'
 
 export const TorrentsList = () => {
-  const { list, setSelected } = useTorrents()
+  const { list, select, selectSingle } = useTorrents()
   const { layout } = useLocalSettings()
 
   return (
     <Flex mt={3}>
-      <Stack spacing={layout === 'compact' ? 1 : 3} w='full'>
+      <Stack spacing={layout === 'compact' ? 2 : 3} w='full'>
         {Object.values(list).map((torrent) => (
-          <Torrent key={torrent.id} torrent={torrent} onDoubleClick={() => setSelected(torrent.id)} />
+          <Torrent
+            key={torrent.id}
+            torrent={torrent}
+            onClick={(e) => {
+              if (!e.ctrlKey) {
+                return selectSingle(torrent.id)
+              }
+
+              select(torrent.id)
+            }}
+            onTouchEnd={() => select(torrent.id)}
+          />
         ))}
       </Stack>
     </Flex>

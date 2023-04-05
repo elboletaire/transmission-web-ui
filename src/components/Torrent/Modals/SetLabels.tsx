@@ -1,4 +1,13 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+} from '@chakra-ui/react'
 import { CreatableSelect } from 'chakra-react-select'
 import { useState } from 'react'
 import { useTorrent } from '../../../hooks/use-torrent'
@@ -19,9 +28,12 @@ export const SetLabels = ({ isOpen, close }: SetLabelsProps) => {
     <Modal isOpen={isOpen} onClose={close} size={['xs', 'md', 'xl']}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Set labels for {torrent.name}</ModalHeader>
+        <ModalHeader>Set labels</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          <Text mb={2}>
+            Set or change labels for <strong>{torrent.name}</strong>
+          </Text>
           <CreatableSelect
             autoFocus
             isMulti
