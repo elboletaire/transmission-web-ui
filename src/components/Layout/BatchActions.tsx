@@ -1,7 +1,7 @@
 import { ButtonGroup, Divider, IconButton, Stack } from '@chakra-ui/react'
-import { FaInfoCircle, FaPause, FaPlay, FaTrash } from 'react-icons/fa'
-import { FiFilePlus } from 'react-icons/fi'
+import { HiPause, HiPlay, HiTrash } from 'react-icons/hi2'
 import { useTorrents } from '../../hooks/use-torrents'
+import { AddTorrents } from './AddTorrents'
 
 export const BatchActions = () => {
   const { selected, start, stop } = useTorrents()
@@ -11,7 +11,7 @@ export const BatchActions = () => {
 
   return (
     <Stack direction='row' gap={1}>
-      <IconButton aria-label='Add torrent' variant='ghost' icon={<FiFilePlus />} onClick={() => {}} />
+      <AddTorrents />
       <Divider orientation='vertical' />
       <ButtonGroup isAttached>
         <IconButton
@@ -19,7 +19,7 @@ export const BatchActions = () => {
           title={resume}
           variant='ghost'
           isDisabled={!selected.length}
-          icon={<FaPlay />}
+          icon={<HiPlay />}
           onClick={() => start(selected)}
         />
         <IconButton
@@ -27,7 +27,7 @@ export const BatchActions = () => {
           title={pause}
           variant='ghost'
           isDisabled={!selected.length}
-          icon={<FaPause />}
+          icon={<HiPause />}
           onClick={() => stop(selected)}
         />
       </ButtonGroup>
@@ -38,17 +38,7 @@ export const BatchActions = () => {
         variant='ghost'
         colorScheme='red'
         isDisabled={!selected.length}
-        icon={<FaTrash />}
-        onClick={() => {}}
-      />
-      <Divider orientation='vertical' />
-      <IconButton
-        aria-label='Get info from selected torrent'
-        title={`Get info`}
-        variant='ghost'
-        colorScheme='blue'
-        isDisabled={selected.length !== 1}
-        icon={<FaInfoCircle />}
+        icon={<HiTrash />}
         onClick={() => {}}
       />
     </Stack>

@@ -4,6 +4,22 @@ import { useLocalSettingsProvider } from './use-local-settings'
 import { useClient } from './use-rpc'
 import { SetPayload, useTorrentsReducer } from './use-torrents-reducer'
 
+export type AddSettings = {
+  cookies?: string
+  'download-dir'?: string
+  filename?: string
+  labels?: string[]
+  metainfo?: string
+  paused?: boolean
+  'peer-limit'?: number
+  bandwidthPriority?: number
+  'files-wanted'?: number[]
+  'files-unwanted'?: number[]
+  'priority-high'?: number[]
+  'priority-low'?: number[]
+  'priority-normal'?: number[]
+}
+
 export const useTorrentsProvider = () => {
   const {
     torrents,
@@ -19,9 +35,19 @@ export const useTorrentsProvider = () => {
   const { connected, makeRequest } = useClient()
   const { fetchTorrentsTimeout } = useLocalSettingsProvider()
 
+  const add = (args: AddSettings) => {
+    if (!args.filename && !args.metainfo) {
+      throw new Error('either filename or metainfo must be provided')
+    }
+    setUpdating(true)
+    return makeRequest('torrent-add', args)
+      .then((response) => response.data)
+      .finally(() => setUpdating(false))
+  }
+
   // fetches torrent updates
-  const fetch: (ids?: string | number[]) => Promise<any> = useCallback(
-    async (ids?: string | number[]) => {
+  const fetch: (ids?: string | number[]) => Promise<void> | undefined = useCallback(
+    (ids?: string | number[]) => {
       if (updating) {
         return
       }
@@ -34,7 +60,7 @@ export const useTorrentsProvider = () => {
         args.ids = ids
       }
 
-      return await makeRequest('torrent-get', args)
+      return makeRequest('torrent-get', args)
         .then((response) => setAction(response.data.arguments as SetPayload))
         .finally(() => setUpdating(false))
     },
@@ -144,6 +170,7 @@ export const useTorrentsProvider = () => {
 
   return {
     ...torrents,
+    add,
     fetch,
     reannounce,
     rename,

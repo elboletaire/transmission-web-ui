@@ -89,6 +89,7 @@ export const useClientProvider = ({ rpc: r }: ClientProviderProps) => {
     fetchSession: () => makeRequest('session-get'),
     rpc,
     sessid,
+    session,
     setRpc,
   }
 }

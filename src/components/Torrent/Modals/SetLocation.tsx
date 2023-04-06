@@ -33,7 +33,7 @@ export const SetLocation = ({ isOpen, close }: SetLocationProps) => {
     <Modal isOpen={isOpen} onClose={close} size={['xs', 'md', 'xl']}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Change location</ModalHeader>
+        <ModalHeader>Set location</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text mb={2}>
