@@ -1,3 +1,7 @@
+# Archived
+
+See [TrguiNG] as a much better replacement.
+
 # Transmission React Web UI
 
 I take free time to make this, so don't expect it to be finished anytime soon (or ever).
@@ -26,3 +30,4 @@ unprotected or because you're on a LAN), you can try the
 [uploaded version in github pages][pages].
 
 [pages]: https://elboletaire.github.io/transmission-web-ui/
+[TrguiNG]: https://github.com/openscopeproject/TrguiNG
